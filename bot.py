@@ -1,6 +1,9 @@
 import praw
 import config
-import time, os
+import os, json
+
+with open("idioms.json") as f:
+    idioms = json.load(f)
 
 def login():
     print("Login in...")
@@ -14,14 +17,14 @@ def login():
 
 def run(r, comments_seen):
     for comment in r.subreddit('test').comments(limit=25):
-        if "hello" in comment.body and comment.id not in comments_seen and comment.author != r.user.me():
-            comment.reply("hi!!!")
-            comments_seen.append(comment.id)
-            with open("comments_seen.txt", "a") as f:
-                f.write(comment.id + "\n")
-            print("Replied to comment", comment.id)
-    # Sleep for 10 seconds...
-    time.sleep(10)
+        for idiom in idioms:
+            if idiom.lower().replace(",", "") in comment.body.lower().replace(",", "")\
+                    and comment.id not in comments_seen and comment.author != r.user.me():
+                comment.reply("You used an idiom!\n\n>{}\n\n{}".format(idiom, idioms[idiom].capitalize()))
+                comments_seen.append(comment.id)
+                with open("comments_seen.txt", "a") as f:
+                    f.write(comment.id + "\n")
+                print("Replied to comment", comment.id)
 
 def get_seen_comments():
     if not os.path.isfile("comments_seen.txt"):
@@ -29,8 +32,9 @@ def get_seen_comments():
     else:
         with open("comments_seen.txt", "r") as f:
             comments_seen = f.readlines()
-            comments_seen = filter(None, comments_seen)
+            comments_seen = list(filter(None, comments_seen))
     return comments_seen
-r = login()
-comments_seen = get_seen_comments()
-run(r, comments_seen)
+
+# r = login()
+# comments_seen = get_seen_comments()
+# run(r, comments_seen)
