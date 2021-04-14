@@ -35,6 +35,6 @@ def get_seen_comments():
             comments_seen = list(filter(None, comments_seen))
     return comments_seen
 
-# r = login()
-# comments_seen = get_seen_comments()
-# run(r, comments_seen)
+r = login()
+comments_seen = get_seen_comments()
+run(r, comments_seen)
