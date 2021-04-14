@@ -7,4 +7,4 @@ Following tutorial: [How To Make A reddit Bot](https://www.youtube.com/watch?v=k
 This bot is able to automatically reply to a subreddit's comments when a user uses an idiom that is recorded in the
 ```idiom.json``` file which contains 1448 idioms.
 
-![demo]()
+![demo](https://github.com/lanyshi/python-reddit-bot/blob/dev/demo.PNG)
